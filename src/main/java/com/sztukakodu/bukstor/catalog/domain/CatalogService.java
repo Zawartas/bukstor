@@ -1,6 +1,7 @@
 package com.sztukakodu.bukstor.catalog.domain;
 
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
