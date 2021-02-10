@@ -10,6 +10,7 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 public class CatalogController {
+
     private final CatalogService service;
 
     public List<Book> findByTitle(String title) {
