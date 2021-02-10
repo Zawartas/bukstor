@@ -1,5 +1,8 @@
 package com.sztukakodu.bukstor;
 
+import com.sztukakodu.bukstor.catalog.application.CatalogController;
+import com.sztukakodu.bukstor.catalog.domain.Book;
+import com.sztukakodu.bukstor.catalog.domain.CatalogService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -7,21 +10,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.util.List;
 
 @SpringBootApplication
-public class BukstorWwwSzopApplication implements CommandLineRunner {
+public class BukstorWwwSzopApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(BukstorWwwSzopApplication.class, args);
 	}
 
-	private CatalogService catalog;
-
-	public BukstorWwwSzopApplication(CatalogService catalog) {
-		this.catalog = catalog;
-	}
-
-	@Override
-	public void run(String... args) throws Exception {
-		List<Book> books = catalog.findByTitle("Pan");
-		books.forEach(System.out::println);
-	}
 }

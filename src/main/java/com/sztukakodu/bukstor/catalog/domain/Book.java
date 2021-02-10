@@ -1,4 +1,4 @@
-package com.sztukakodu.bukstor;
+package com.sztukakodu.bukstor.catalog.domain;
 
 public class Book {
     Long id;
