@@ -25,7 +25,12 @@ public class ApplicationStartup implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        System.out.println("----by title----");
         List<Book> books = this.controller.findByTitle(title);
+        books.forEach(System.out::println);
+
+        System.out.println("----by author----");
+        books = this.controller.findByAuthor("Sien");
         books.forEach(System.out::println);
     }
 }

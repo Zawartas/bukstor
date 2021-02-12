@@ -19,7 +19,8 @@ class SchoolCatalogRepository implements CatalogRepository {
         storage.put(1L, new Book(1L, "Pan Tadeusz", "Mickiewicz", 2049));
         storage.put(2L, new Book(2L, "1984", "Orwell", 1949));
         storage.put(3L, new Book(3L, "Nowy Wspaniały Swiat", "Huxley", 1971));
-        storage.put(4L, new Book(4L, "Pan Wołodyjowski", "Sienkiewicz", 1891));
+        storage.put(4L, new Book(4L, "Pan Wołodyjowski", "Henryk Sienkiewicz", 1891));
+        storage.put(5L, new Book(5L, "W pusyni i puszczy", "Sienkiewicz", 1891));
     }
 
     @Override
