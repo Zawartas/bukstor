@@ -2,7 +2,6 @@ package com.sztukakodu.bukstor.catalog.infrastructure;
 
 import com.sztukakodu.bukstor.catalog.domain.Book;
 import com.sztukakodu.bukstor.catalog.domain.CatalogRepository;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -10,11 +9,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 @Repository
-class SchoolCatalogRepository implements CatalogRepository {
+class MemoryCatalogRepository implements CatalogRepository {
 
     private final Map<Long, Book> storage = new ConcurrentHashMap<>();
+    private final AtomicLong ID_NEXT_LONG = new AtomicLong(0L);
 
     @Override
     public List<Book> findAll() {
@@ -23,16 +24,21 @@ class SchoolCatalogRepository implements CatalogRepository {
 
     @Override
     public void save(Book book) {
-        //
+        if (book.getId() == null) {
+            book.setId(ID_NEXT_LONG.getAndIncrement());
+        }
+        storage.put(book.getId(), book);
     }
 
     @Override
     public Optional<Book> findById(Long id) {
-        return Optional.ofNullable(storage.get(id));
+        return findAll().stream()
+                .filter(book -> book.getId() == id)
+                .findFirst();
     }
 
     @Override
     public void removeById(Long id) {
-        //
+        storage.remove(id);
     }
 }

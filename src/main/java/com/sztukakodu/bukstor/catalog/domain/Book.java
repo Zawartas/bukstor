@@ -3,11 +3,18 @@ package com.sztukakodu.bukstor.catalog.domain;
 import lombok.*;
 
 @Getter
+@Setter
 @RequiredArgsConstructor
 @ToString
 public class Book {
-    private final Long id;
-    private final String title;
-    private final String author;
-    private final Integer year;
+    private Long id;
+    private String title;
+    private String author;
+    private Integer year;
+
+    public Book(String title, String author, Integer year) {
+        this.title = title;
+        this.author = author;
+        this.year = year;
+    }
 }
