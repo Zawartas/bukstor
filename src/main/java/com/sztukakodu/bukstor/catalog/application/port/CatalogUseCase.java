@@ -10,15 +10,18 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CatalogUseCase {
-    List<Book> findByTitle(String title);
 
-    Optional<Book> findOneByTitle(String title);
+    List<Book> findByTitle(String title);
 
     List<Book> findByAuthor(String author);
 
     List<Book> findAll();
 
+    Optional<Book> findOneByTitle(String title);
+
     Optional<Book> findOneByTitleAndAuthor(String title, String author);
+
+    Optional<Book> findById(Long id);
 
     void addBook(CreateBookCommand command);
 
