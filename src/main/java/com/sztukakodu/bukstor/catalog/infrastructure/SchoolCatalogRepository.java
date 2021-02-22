@@ -2,7 +2,6 @@ package com.sztukakodu.bukstor.catalog.infrastructure;
 
 import com.sztukakodu.bukstor.catalog.domain.Book;
 import com.sztukakodu.bukstor.catalog.domain.CatalogRepository;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -22,8 +21,8 @@ class SchoolCatalogRepository implements CatalogRepository {
     }
 
     @Override
-    public void save(Book book) {
-        //
+    public Book save(Book book) {
+        return null;
     }
 
     @Override

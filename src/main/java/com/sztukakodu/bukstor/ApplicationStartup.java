@@ -16,7 +16,6 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 import static com.sztukakodu.bukstor.order.application.port.PlaceOrderUseCase.*;
 
@@ -54,8 +53,10 @@ public class ApplicationStartup implements CommandLineRunner {
         catalog.addBook(new CreateBookCommand("Henryk Potter cz.1", "J.K.Rawling", 2001, new BigDecimal(100)));
         catalog.addBook(new CreateBookCommand("Harry i komnata tajemnic", "J.K.Rawling", 2002, new BigDecimal(20)));
         catalog.addBook(new CreateBookCommand("On i Harry Potter cz.3", "Piekara", 2003, new BigDecimal(75)));
-        catalog.addBook(new CreateBookCommand("Wiedzmin", "Andrzej Sapkowski", 2004, new BigDecimal(125)));
-        catalog.addBook(new CreateBookCommand("Pan Tadeusz", "Mickiewicz", 1887, new BigDecimal(125)));
+        catalog.addBook(new CreateBookCommand("Wiedzmin", "Andrzej Sapkowski", 2004, new BigDecimal(83)));
+        catalog.addBook(new CreateBookCommand("Pan Tadeusz", "Mickiewicz", 1887, new BigDecimal(105)));
+        catalog.addBook(new CreateBookCommand("Pan Wolodyjowski", "Henryk Sienkiewicz", 1863, new BigDecimal(99)));
+        catalog.addBook(new CreateBookCommand("Dziady", "Mickiewicz", 1901, new BigDecimal(35)));
     }
 
     private void findByAuthor() {
@@ -71,7 +72,9 @@ public class ApplicationStartup implements CommandLineRunner {
     }
 
     private void findAndUpdate() {
-        catalog.findOneByTitleAndAuthor("Wiedzmin", "Sapkowski")
+        catalog.findByTitleAndAuthor("Wiedzmin", "Sapkowski")
+                .stream()
+                .findFirst()
                 .ifPresent(book -> {
                     UpdateBookCommand update = UpdateBookCommand
                             .builder()
