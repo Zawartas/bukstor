@@ -1,15 +1,14 @@
 package com.sztukakodu.bukstor.order.application;
 
-import com.sztukakodu.bukstor.order.application.port.PlaceOrderUseCase;
+import com.sztukakodu.bukstor.order.application.port.OrderUseCase;
 import com.sztukakodu.bukstor.order.domain.Order;
 import com.sztukakodu.bukstor.order.domain.OrderRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class PlaceOrderService implements PlaceOrderUseCase {
+public class OrderService implements OrderUseCase {
 
     private final OrderRepository repository;
 
@@ -21,5 +20,10 @@ public class PlaceOrderService implements PlaceOrderUseCase {
                 .build();
         Order save = repository.save(order);
         return PlaceOrderResponse.success(save.getId());
+    }
+
+    @Override
+    public void removeOrderById(Long id) {
+        repository.removeById(id);
     }
 }

@@ -5,10 +5,8 @@ import com.sztukakodu.bukstor.catalog.application.port.CatalogUseCase.CreateBook
 import com.sztukakodu.bukstor.catalog.application.port.CatalogUseCase.UpdateBookCommand;
 import com.sztukakodu.bukstor.catalog.application.port.CatalogUseCase.UpdateBookResponse;
 import com.sztukakodu.bukstor.catalog.domain.Book;
-import com.sztukakodu.bukstor.order.application.port.PlaceOrderUseCase;
-import com.sztukakodu.bukstor.order.application.port.PlaceOrderUseCase.PlaceOrderCommand;
+import com.sztukakodu.bukstor.order.application.port.OrderUseCase;
 import com.sztukakodu.bukstor.order.application.port.QueryOrderUseCase;
-import com.sztukakodu.bukstor.order.domain.OrderItem;
 import com.sztukakodu.bukstor.order.domain.Recipient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -17,19 +15,17 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static com.sztukakodu.bukstor.order.application.port.PlaceOrderUseCase.*;
-
 @Component
 public class ApplicationStartup implements CommandLineRunner {
 
     private final CatalogUseCase catalog;
-    private final PlaceOrderUseCase placeOrder;
+    private final OrderUseCase placeOrder;
     private final QueryOrderUseCase queryOrder;
     private final String title;
 
     public ApplicationStartup(
             CatalogUseCase catalog,
-            PlaceOrderUseCase placeOrder,
+            OrderUseCase placeOrder,
             QueryOrderUseCase queryOrder,
             @Value("${title}") String title) {
         this.catalog = catalog;
@@ -46,7 +42,8 @@ public class ApplicationStartup implements CommandLineRunner {
         findAndUpdate();
         findByTitle();
 
-        placeOrder();
+//        placeFirstOrder();
+//        placeSecondOrder();
     }
 
     private void initData() {
@@ -57,6 +54,8 @@ public class ApplicationStartup implements CommandLineRunner {
         catalog.addBook(new CreateBookCommand("Pan Tadeusz", "Mickiewicz", 1887, new BigDecimal(105)));
         catalog.addBook(new CreateBookCommand("Pan Wolodyjowski", "Henryk Sienkiewicz", 1863, new BigDecimal(99)));
         catalog.addBook(new CreateBookCommand("Dziady", "Mickiewicz", 1901, new BigDecimal(35)));
+
+
     }
 
     private void findByAuthor() {
@@ -90,7 +89,7 @@ public class ApplicationStartup implements CommandLineRunner {
                 });
     }
 
-    private void placeOrder() {
+    private void placeFirstOrder() {
         Book bookWiedzmin = catalog.findOneByTitle("Wiedzmin")
                 .orElseThrow(() -> new IllegalStateException("Can't find this book"));
         Book bookPanTadeusz = catalog.findOneByTitle("Pan Tadeusz")
@@ -105,19 +104,46 @@ public class ApplicationStartup implements CommandLineRunner {
                 .email("jan@kowalski.pl")
                 .build();
 
-        PlaceOrderCommand order = PlaceOrderCommand.builder()
-                .recipient(recipient)
-                .item(new OrderItem(bookWiedzmin, 1))
-                .item(new OrderItem(bookPanTadeusz, 3))
+//        PlaceOrderCommand order = PlaceOrderCommand.builder()
+//                .recipient(recipient)
+//                .item(new OrderItem(bookWiedzmin, 1))
+//                .item(new OrderItem(bookPanTadeusz, 3))
+//                .build();
+
+//        PlaceOrderResponse response = placeOrder.placeOrder(order);
+//        System.out.println("Created order with id: " + response.getOrderId());
+
+//        queryOrder.findAll()
+//                .forEach(o -> {
+//                    System.out.println("GOT ORDER WITH TOTAL PRICE: " + o.totalPrice() + " DETAILS: " + o);
+//                });
+    }
+
+    private void placeSecondOrder() {
+        Book book_1 = catalog.findOneByTitle("Pan Wolodyjowski")
+                .orElseThrow(() -> new IllegalStateException("Can't find this book"));
+
+        Recipient recipient = Recipient.builder()
+                .name("John Doe")
+                .street("Klawiszowa 3")
+                .city("Warszawa")
+                .zipCode("02-223")
+                .phone("512-221-674")
+                .email("john.doe@adres.pl")
                 .build();
 
-        PlaceOrderResponse response = placeOrder.placeOrder(order);
-        System.out.println("Created order with id: " + response.getOrderId());
-
-        queryOrder.findAll()
-                .forEach(o -> {
-                    System.out.println("GOT ORDER WITH TOTAL PRICE: " + o.totalPrice() + " DETAILS: " + o);
-                });
+//        PlaceOrderCommand order = PlaceOrderCommand.builder()
+//                .recipient(recipient)
+//                .item(new OrderItem(book_1, 4))
+//                .build();
+//
+//        PlaceOrderResponse response = placeOrder.placeOrder(order);
+//        System.out.println("Created order with id: " + response.getOrderId());
+//
+//        queryOrder.findAll()
+//                .forEach(o -> {
+//                    System.out.println("GOT ORDER WITH TOTAL PRICE: " + o.totalPrice() + " DETAILS: " + o);
+//                });
     }
 }
 

@@ -5,13 +5,16 @@ import com.sztukakodu.bukstor.catalog.domain.Book;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.util.*;
@@ -59,9 +62,20 @@ public class CatalogController {
         return ResponseEntity.created(uri).build();
     }
 
-    @PutMapping("/{id}/cover")
-    public void addBookCover() {
+    @PutMapping(value = "/{id}/cover", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public void addBookCover(@PathVariable Long id, @RequestParam("file") MultipartFile file)
+            throws IOException {
+        System.out.println("Got file: " + file.getOriginalFilename());
+        catalog.updateBookCover(
+                new UpdateBookCoverCommand(
+                        id, file.getBytes(), file.getContentType(), file.getOriginalFilename()));
+    }
 
+    @DeleteMapping("/{id}/cover")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void removeBookCover(@PathVariable Long id) {
+        catalog.removeBookCover(id);
     }
 
     @PutMapping("/{id}")
