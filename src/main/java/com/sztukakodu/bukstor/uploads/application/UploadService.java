@@ -1,7 +1,9 @@
 package com.sztukakodu.bukstor.uploads.application;
 
 import com.sztukakodu.bukstor.uploads.application.ports.UploadUseCase;
+import com.sztukakodu.bukstor.uploads.db.UploadJpaRepository;
 import com.sztukakodu.bukstor.uploads.domain.Upload;
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 
@@ -11,32 +13,31 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
+@AllArgsConstructor
 public class UploadService implements UploadUseCase {
 
-    private final Map<String, Upload> storage = new ConcurrentHashMap<>();
+    private final UploadJpaRepository repository;
 
     @Override
     public Upload save(SaveUploadCommand command) {
-        final String id = RandomStringUtils.randomAlphanumeric(8).toLowerCase();
+//        final Long id = Long.parseLong(RandomStringUtils.randomAlphanumeric(8).toLowerCase());
         Upload upload = new Upload(
-                id,
-                command.getFile(),
-                command.getContentType(),
                 command.getFilename(),
-                LocalDateTime.now()
+                command.getContentType(),
+                command.getFile()
         );
-        storage.put(upload.getId(), upload);
-        System.out.println("Upload saved: " + upload.getFilename() + ", id: " + id);
+        repository.save(upload);
+        System.out.println("Upload saved: " + upload.getFilename() + ", id: " + upload.getId());
         return upload;
     }
 
     @Override
-    public Optional<Upload> getById(String id) {
-        return Optional.ofNullable(storage.get(id));
+    public Optional<Upload> getById(Long id) {
+        return repository.findById(id);
     }
 
     @Override
-    public void removeById(String id) {
-        storage.remove(id);
+    public void removeById(Long id) {
+        repository.deleteById(id);
     }
 }

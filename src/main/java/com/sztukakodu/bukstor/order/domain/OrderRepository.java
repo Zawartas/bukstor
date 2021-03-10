@@ -10,5 +10,5 @@ public interface OrderRepository {
 
     Optional<Order> findById(Long id);
 
-    void removeById(Long id);
+    void deleteById(Long id);
 }

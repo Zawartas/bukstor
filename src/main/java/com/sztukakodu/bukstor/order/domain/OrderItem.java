@@ -1,14 +1,27 @@
 package com.sztukakodu.bukstor.order.domain;
 
 import com.sztukakodu.bukstor.catalog.domain.Book;
-import lombok.Builder;
-import lombok.Value;
+import lombok.*;
 
-@Value
+import javax.persistence.*;
+
+@Data
 @Builder
+@Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderItem {
 
-    Book book;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
 
-    int quantity;
+    private Long bookId;
+
+    private int quantity;
+
+    public OrderItem(Long bookId, int quantity) {
+        this.bookId = bookId;
+        this.quantity = quantity;
+    }
 }

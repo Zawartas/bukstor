@@ -5,8 +5,9 @@ import com.sztukakodu.bukstor.catalog.application.port.CatalogUseCase.CreateBook
 import com.sztukakodu.bukstor.catalog.application.port.CatalogUseCase.UpdateBookCommand;
 import com.sztukakodu.bukstor.catalog.application.port.CatalogUseCase.UpdateBookResponse;
 import com.sztukakodu.bukstor.catalog.domain.Book;
-import com.sztukakodu.bukstor.order.application.port.OrderUseCase;
+import com.sztukakodu.bukstor.order.application.port.ManipulateOrderUseCase;
 import com.sztukakodu.bukstor.order.application.port.QueryOrderUseCase;
+import com.sztukakodu.bukstor.order.domain.OrderItem;
 import com.sztukakodu.bukstor.order.domain.Recipient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
@@ -19,13 +20,13 @@ import java.util.List;
 public class ApplicationStartup implements CommandLineRunner {
 
     private final CatalogUseCase catalog;
-    private final OrderUseCase placeOrder;
+    private final ManipulateOrderUseCase placeOrder;
     private final QueryOrderUseCase queryOrder;
     private final String title;
 
     public ApplicationStartup(
             CatalogUseCase catalog,
-            OrderUseCase placeOrder,
+            ManipulateOrderUseCase placeOrder,
             QueryOrderUseCase queryOrder,
             @Value("${title}") String title) {
         this.catalog = catalog;
@@ -42,7 +43,7 @@ public class ApplicationStartup implements CommandLineRunner {
         findAndUpdate();
         findByTitle();
 
-//        placeFirstOrder();
+        placeFirstOrder();
 //        placeSecondOrder();
     }
 
@@ -104,14 +105,19 @@ public class ApplicationStartup implements CommandLineRunner {
                 .email("jan@kowalski.pl")
                 .build();
 
-//        PlaceOrderCommand order = PlaceOrderCommand.builder()
-//                .recipient(recipient)
-//                .item(new OrderItem(bookWiedzmin, 1))
-//                .item(new OrderItem(bookPanTadeusz, 3))
-//                .build();
+        ManipulateOrderUseCase.PlaceOrderCommand order = ManipulateOrderUseCase.PlaceOrderCommand
+                .builder()
+                .recipient(recipient)
+                .item(new OrderItem(bookWiedzmin.getId(), 1))
+                .item(new OrderItem(bookPanTadeusz.getId(), 3))
+                .build();
 
-//        PlaceOrderResponse response = placeOrder.placeOrder(order);
-//        System.out.println("Created order with id: " + response.getOrderId());
+        ManipulateOrderUseCase.PlaceOrderResponse response = placeOrder.placeOrder(order);
+        String result = response.handle(
+                orderId -> "Created order with id: " + orderId,
+                error -> "Failed to create order: " + error
+        );
+        System.out.println(result);
 
 //        queryOrder.findAll()
 //                .forEach(o -> {

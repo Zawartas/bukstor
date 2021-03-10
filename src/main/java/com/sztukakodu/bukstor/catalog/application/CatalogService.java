@@ -1,11 +1,13 @@
 package com.sztukakodu.bukstor.catalog.application;
 
 import com.sztukakodu.bukstor.catalog.application.port.CatalogUseCase;
+import com.sztukakodu.bukstor.catalog.db.BookJpaRepository;
 import com.sztukakodu.bukstor.catalog.domain.Book;
 import com.sztukakodu.bukstor.catalog.domain.CatalogRepository;
 import com.sztukakodu.bukstor.uploads.application.ports.UploadUseCase;
 import com.sztukakodu.bukstor.uploads.application.ports.UploadUseCase.SaveUploadCommand;
 import com.sztukakodu.bukstor.uploads.domain.Upload;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,17 +20,18 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-//@AllArgsConstructor
+@AllArgsConstructor
 class CatalogService implements CatalogUseCase {
 
-    private final CatalogRepository repository;
+//    private final CatalogRepository repository;
+    private final BookJpaRepository repository;
     private final UploadUseCase upload;
 
-    public CatalogService(@Qualifier("memoryCatalogRepository") CatalogRepository repository,
-                          UploadUseCase upload) {
-        this.repository = repository;
-        this.upload = upload;
-    }
+//    public CatalogService(@Qualifier("memoryCatalogRepository") CatalogRepository repository,
+//                          UploadUseCase upload) {
+//        this.repository = repository;
+//        this.upload = upload;
+//    }
 
     @Override
     public List<Book> findByTitle(String title) {
@@ -80,7 +83,8 @@ class CatalogService implements CatalogUseCase {
 
     @Override
     public void removeBookById(Long id) {
-        repository.removeById(id);
+//        repository.removeById(id);
+        repository.deleteById(id);
     }
 
     @Override

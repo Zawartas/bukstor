@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: bukstordb
+    image: postgres
+    restart: always
+    environment:
+#      name of database to connect to
+#      spring.datasource.url=jdbc:postgresql://localhost:7432/bukstor
+      POSTGRES_DB: bukstor
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: pass123
+    ports:
+      - "7432:5432"
