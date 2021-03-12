@@ -1,5 +1,6 @@
 package com.sztukakodu.bukstor.catalog.application.port;
 
+import com.sztukakodu.bukstor.catalog.domain.Author;
 import com.sztukakodu.bukstor.catalog.domain.Book;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface CatalogUseCase {
 
@@ -37,7 +39,7 @@ public interface CatalogUseCase {
     @Value
     class CreateBookCommand {
         String title;
-        String author;
+        Set<Long> authors;
         Integer year;
         BigDecimal price;
     }
@@ -48,25 +50,9 @@ public interface CatalogUseCase {
     class UpdateBookCommand {
         Long id;
         String title;
-        String author;
+        Set<Long> authors;
         Integer year;
         BigDecimal price;
-
-        public Book updateFields(Book book) {
-            if (title != null) {
-                book.setTitle(title);
-            }
-            if (author != null) {
-                book.setAuthor(author);
-            }
-            if (year != null) {
-                book.setYear(year);
-            }
-            if (price != null) {
-                book.setPrice(price);
-            }
-            return book;
-        }
     }
 
     @Value

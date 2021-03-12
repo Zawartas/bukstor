@@ -100,8 +100,8 @@ public class CatalogController {
         @NotBlank(message = "please provide a title")
         private String title;
 
-        @NotBlank
-        private String author;
+        @NotEmpty
+        private Set<Long> authors;
 
         @NotNull
         @Positive
@@ -112,7 +112,7 @@ public class CatalogController {
         private BigDecimal price;
 
         CreateBookCommand toCreateCommand() {
-            return new CreateBookCommand(title, author, year, price);
+            return new CreateBookCommand(title, authors, year, price);
         }
     }
 
@@ -121,9 +121,8 @@ public class CatalogController {
 
         @Pattern(regexp = "^[a-zA-Z]+( [a-zA-Z]+)*$")
         private String title;
-
-        @Pattern(regexp = "^[a-zA-Z]+( [a-zA-Z]+)*$")
-        private String author;
+        
+        private Set<Long> authors;
 
         @Positive
         private Integer year;
@@ -132,7 +131,7 @@ public class CatalogController {
         private BigDecimal price;
 
         UpdateBookCommand toUpdateCommand(Long id) {
-            return new UpdateBookCommand(id, title, author, year, price);
+            return new UpdateBookCommand(id, title, authors, year, price);
         }
     }
 
